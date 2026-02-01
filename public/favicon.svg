@@ -1,11 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="flashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ff0066"/>
-      <stop offset="50%" style="stop-color:#ff3366"/>
-      <stop offset="100%" style="stop-color:#cc0052"/>
-    </linearGradient>
-  </defs>
-  <circle cx="50" cy="50" r="45" fill="url(#flashGrad)"/>
-  <path d="M35 25 L65 25 L55 45 L70 45 L40 80 L48 52 L30 52 Z" fill="white"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- FrontPage-style document icon -->
+  <rect x="4" y="2" width="20" height="26" fill="#ffffff" stroke="#000080" stroke-width="1"/>
+  <rect x="4" y="2" width="20" height="5" fill="#000080"/>
+  <line x1="8" y1="12" x2="20" y2="12" stroke="#006666" stroke-width="2"/>
+  <line x1="8" y1="16" x2="18" y2="16" stroke="#333" stroke-width="1"/>
+  <line x1="8" y1="19" x2="20" y2="19" stroke="#333" stroke-width="1"/>
+  <line x1="8" y1="22" x2="16" y2="22" stroke="#333" stroke-width="1"/>
 </svg>

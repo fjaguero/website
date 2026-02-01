@@ -1,277 +1,66 @@
 ---
 import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
-<Layout title="About | Retro Website">
-  <h1 class="page-title">ABOUT ME</h1>
+<Layout title="About Me" filename="about.htm">
+  <h1>About Me</h1>
 
-  <div class="about-container">
-    <div class="profile-section">
-      <div class="avatar-frame">
-        <div class="avatar-placeholder">
-          <span class="avatar-icon">👤</span>
-        </div>
-        <div class="avatar-scanlines"></div>
-      </div>
+  <hr />
 
-      <div class="status-display">
-        <div class="status-row">
-          <span class="status-label">STATUS:</span>
-          <span class="status-value online">● ONLINE</span>
-        </div>
-        <div class="status-row">
-          <span class="status-label">MOOD:</span>
-          <span class="status-value">Nostalgic</span>
-        </div>
-        <div class="status-row">
-          <span class="status-label">LISTENING:</span>
-          <span class="status-value marquee">
-            <span class="marquee-content">♫ Daft Punk - Digital Love ♫</span>
-          </span>
-        </div>
-      </div>
-    </div>
+  <p>
+    Hello and welcome to my About page! My name is <strong>[Your Name]</strong> and
+    I'm excited to have you visit my website.
+  </p>
 
-    <div class="bio-section">
-      <div class="content-box">
-        <h2>// WHO AM I</h2>
-        <p>
-          Hello! I'm a human who makes things on the internet. This website is my
-          personal space where I share articles, notes, and random thoughts.
-        </p>
-        <p style="margin-top: 15px;">
-          I built this site as a tribute to the early web — back when websites had
-          personality, Flash intros were cool, and "Under Construction" GIFs were
-          everywhere. Remember those days?
-        </p>
-      </div>
+  <h2>Who Am I?</h2>
 
-      <div class="content-box">
-        <h2>// INTERESTS</h2>
-        <ul class="interest-list">
-          <li><span class="bullet">▸</span> Web Development</li>
-          <li><span class="bullet">▸</span> Retro Computing</li>
-          <li><span class="bullet">▸</span> Digital Art</li>
-          <li><span class="bullet">▸</span> Video Games</li>
-          <li><span class="bullet">▸</span> Music Production</li>
-        </ul>
-      </div>
+  <p>
+    I'm a web enthusiast who loves building things on the internet. This website is my
+    personal space where I share articles, notes, and random thoughts about technology,
+    design, and life.
+  </p>
 
-      <div class="content-box">
-        <h2>// CONNECT</h2>
-        <div class="social-links">
-          <a href="#" class="social-btn" title="Email">
-            <span>📧</span>
-            <span>EMAIL</span>
-          </a>
-          <a href="#" class="social-btn" title="GitHub">
-            <span>💻</span>
-            <span>GITHUB</span>
-          </a>
-          <a href="#" class="social-btn" title="Twitter">
-            <span>🐦</span>
-            <span>TWITTER</span>
-          </a>
-        </div>
-      </div>
-    </div>
+  <p>
+    I created this site as a tribute to the early days of the World Wide Web — back when
+    websites had personality, when <em>Microsoft FrontPage</em> was the tool of choice,
+    and when "Under Construction" GIFs were everywhere!
+  </p>
+
+  <hr />
+
+  <h2>My Interests</h2>
+
+  <ul>
+    <li>Web Development &amp; Design</li>
+    <li>Retro Computing</li>
+    <li>Digital Art</li>
+    <li>Video Games</li>
+    <li>Music Production</li>
+  </ul>
+
+  <hr />
+
+  <h2>Contact Me</h2>
+
+  <p>Want to get in touch? You can reach me through:</p>
+
+  <ul>
+    <li>📧 <a href="mailto:email@example.com">email@example.com</a></li>
+    <li>💻 <a href="https://github.com">GitHub</a></li>
+    <li>🐦 <a href="https://twitter.com">Twitter</a></li>
+  </ul>
+
+  <hr />
+
+  <div class="fp-nav-bar">
+    <a href={`${base}`} class="fp-nav-btn">◀ Back to Home</a>
+    <a href={`${base}articles/`} class="fp-nav-btn">View Articles ▶</a>
   </div>
 
-  <div class="guestbook-teaser content-box">
-    <h2>// SIGN MY GUESTBOOK!</h2>
-    <p>Just kidding, guestbooks are so 2003... but wouldn't that be cool?</p>
-    <div class="retro-badge">
-      <span>🏗️ SITE UNDER CONSTRUCTION 🏗️</span>
-    </div>
-  </div>
+  <hr />
 
-  <style>
-    .about-container {
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 30px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    @media (max-width: 768px) {
-      .about-container {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .profile-section {
-      text-align: center;
-    }
-
-    .avatar-frame {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      margin: 0 auto 20px;
-      border: 3px solid var(--color-primary);
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow:
-        0 0 20px rgba(0, 255, 255, 0.3),
-        inset 0 0 20px rgba(0, 255, 255, 0.1);
-    }
-
-    .avatar-placeholder {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #1a1a2e, #0a0a0f);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .avatar-icon {
-      font-size: 60px;
-      opacity: 0.5;
-    }
-
-    .avatar-scanlines {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        transparent 50%,
-        rgba(0, 0, 0, 0.2) 50%
-      );
-      background-size: 100% 4px;
-      pointer-events: none;
-    }
-
-    .status-display {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid #333;
-      border-radius: 5px;
-      padding: 15px;
-      text-align: left;
-    }
-
-    .status-row {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 12px;
-    }
-
-    .status-row:last-child {
-      margin-bottom: 0;
-    }
-
-    .status-label {
-      color: #666;
-      font-family: var(--font-tech);
-      width: 80px;
-      flex-shrink: 0;
-    }
-
-    .status-value {
-      color: var(--color-text);
-    }
-
-    .status-value.online {
-      color: #00ff00;
-      text-shadow: 0 0 10px #00ff00;
-    }
-
-    .marquee {
-      overflow: hidden;
-      max-width: 140px;
-    }
-
-    .marquee-content {
-      display: inline-block;
-      animation: marquee 10s linear infinite;
-      white-space: nowrap;
-    }
-
-    @keyframes marquee {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-
-    .bio-section {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .interest-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .interest-list li {
-      padding: 8px 0;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-    }
-
-    .bullet {
-      color: var(--color-primary);
-      margin-right: 10px;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .social-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 15px;
-      background: linear-gradient(180deg, #333, #1a1a1a);
-      border: 1px solid #444;
-      border-radius: 5px;
-      color: var(--color-text);
-      text-decoration: none;
-      font-family: var(--font-tech);
-      font-size: 11px;
-      transition: all 0.2s;
-    }
-
-    .social-btn:hover {
-      border-color: var(--color-secondary);
-      box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .guestbook-teaser {
-      max-width: 900px;
-      margin: 30px auto 0;
-      text-align: center;
-    }
-
-    .retro-badge {
-      display: inline-block;
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: repeating-linear-gradient(
-        45deg,
-        #ff6600,
-        #ff6600 10px,
-        #000 10px,
-        #000 20px
-      );
-      color: #fff;
-      font-family: var(--font-pixel);
-      font-size: 10px;
-      animation: blink-badge 1s infinite;
-    }
-
-    @keyframes blink-badge {
-      0%, 70% { opacity: 1; }
-      71%, 100% { opacity: 0.7; }
-    }
-  </style>
+  <p style="text-align: center;">
+    <em>Thanks for visiting! Feel free to sign my guestbook... just kidding, this isn't 2003! 😄</em>
+  </p>
 </Layout>

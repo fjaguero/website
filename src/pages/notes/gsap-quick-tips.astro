@@ -1,151 +1,41 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 const base = import.meta.env.BASE_URL;
+---
 
-const codeStagger = `gsap.from('.item', {
+<Layout title="GSAP Quick Tips" filename="notes/gsap.htm">
+  <p><a href={`${base}notes/`} class="back-link">← Back to Notes</a></p>
+
+  <h1>GSAP Quick Tips</h1>
+
+  <p><em>January 14, 2024</em></p>
+
+  <hr />
+
+  <p>Useful GSAP animation patterns I keep coming back to.</p>
+
+  <h2>Stagger Animations</h2>
+
+  <pre>gsap.from('.item', &#123;
   opacity: 0,
   y: 20,
   stagger: 0.1
-});`;
+&#125;);</pre>
 
-const codeTimeline = `const tl = gsap.timeline();
-tl.from('.box1', { x: -100 })
-  .from('.box2', { x: 100 }, '-=0.3') // overlap
-  .to('.box1', { rotation: 360 });`;
+  <h2>Timeline for Sequences</h2>
 
-const codeScrollTrigger = `gsap.from('.element', {
-  scrollTrigger: {
-    trigger: '.element',
-    start: 'top 80%',
-    toggleActions: 'play none none reverse'
-  },
-  opacity: 0,
-  y: 50
-});`;
+  <pre>const tl = gsap.timeline();
+tl.from('.box1', &#123; x: -100 &#125;)
+  .from('.box2', &#123; x: 100 &#125;, '-=0.3')
+  .to('.box1', &#123; rotation: 360 &#125;);</pre>
 
-const codeSet = `gsap.set('.element', { opacity: 0 });`;
----
+  <h2>Quick Set (No Animation)</h2>
 
-<Layout title="GSAP Quick Tips | Notes">
-  <article class="note-page">
-    <header class="note-header">
-      <a href={`${base}notes/`} class="back-link">← Back to Notes</a>
-      <h1 class="page-title">GSAP Quick Tips</h1>
-      <div class="note-meta">
-        <span>📅 January 14, 2024</span>
-        <span class="tag">#animation</span>
-        <span class="tag">#javascript</span>
-      </div>
-    </header>
+  <pre>gsap.set('.element', &#123; opacity: 0 &#125;);</pre>
 
-    <div class="note-body content-box">
-      <h2>Stagger animations</h2>
-      <div class="code-box">
-        <pre><code set:html={codeStagger} /></pre>
-      </div>
+  <hr />
 
-      <h2>Timeline for sequences</h2>
-      <div class="code-box">
-        <pre><code set:html={codeTimeline} /></pre>
-      </div>
-
-      <h2>ScrollTrigger basics</h2>
-      <div class="code-box">
-        <pre><code set:html={codeScrollTrigger} /></pre>
-      </div>
-
-      <h2>Quick set (no animation)</h2>
-      <div class="code-box">
-        <pre><code set:html={codeSet} /></pre>
-      </div>
-    </div>
-
-    <footer class="note-footer">
-      <a href={`${base}notes/`} class="nav-btn">← More Notes</a>
-    </footer>
-  </article>
-
-  <style>
-    .note-page {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .note-header {
-      margin-bottom: 30px;
-    }
-
-    .back-link {
-      display: inline-block;
-      font-family: var(--font-terminal);
-      font-size: 14px;
-      color: #666;
-      text-decoration: none;
-      margin-bottom: 20px;
-      transition: color 0.2s;
-    }
-
-    .back-link:hover {
-      color: var(--color-accent);
-    }
-
-    .note-meta {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      align-items: center;
-      font-size: 14px;
-      color: #666;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-family: var(--font-terminal);
-      font-size: 11px;
-      color: var(--color-primary);
-      background: rgba(0, 255, 255, 0.1);
-      padding: 3px 8px;
-      border-radius: 3px;
-    }
-
-    .note-body {
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    .note-body h2 {
-      font-family: var(--font-tech);
-      font-size: 16px;
-      color: var(--color-accent);
-      margin: 25px 0 10px;
-    }
-
-    .note-body h2:first-child {
-      margin-top: 0;
-    }
-
-    .code-box {
-      background: #0a0a0f;
-      border: 1px solid #333;
-      border-radius: 5px;
-      padding: 15px;
-      margin: 10px 0 20px;
-      overflow-x: auto;
-    }
-
-    .code-box pre {
-      margin: 0;
-      font-family: 'Courier New', monospace;
-      font-size: 13px;
-      color: #0f0;
-    }
-
-    .note-footer {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 1px solid #333;
-      text-align: center;
-    }
-  </style>
+  <div class="fp-nav-bar">
+    <a href={`${base}notes/`} class="fp-nav-btn">◀ Back to Notes</a>
+  </div>
 </Layout>

@@ -3,12 +3,18 @@ import '../styles/global.css';
 
 interface Props {
   title: string;
-  showPreloader?: boolean;
+  filename?: string;
 }
 
-const { title, showPreloader = false } = Astro.props;
+const { title, filename = 'index.htm' } = Astro.props;
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL;
+
+// Determine which "file" is selected in the tree
+const isHome = currentPath === base || currentPath === `${base}` || currentPath.endsWith('/website/');
+const isAbout = currentPath.includes('/about');
+const isArticles = currentPath.includes('/articles');
+const isNotes = currentPath.includes('/notes');
 ---
 
 <!DOCTYPE html>
@@ -16,305 +22,250 @@ const base = import.meta.env.BASE_URL;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A retro Flash-style personal website" />
+    <meta name="description" content="A personal website made with Microsoft FrontPage 2000" />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-    <title>{title}</title>
+    <title>{title} - Microsoft FrontPage</title>
   </head>
   <body>
-    <!-- Preloader -->
-    {showPreloader && (
-      <div class="preloader" id="preloader">
-        <div class="flash-logo">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="flashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#ff0066"/>
-                <stop offset="50%" style="stop-color:#ff3366"/>
-                <stop offset="100%" style="stop-color:#cc0052"/>
-              </linearGradient>
-            </defs>
-            <circle cx="50" cy="50" r="45" fill="url(#flashGrad)"/>
-            <path d="M35 25 L65 25 L55 45 L70 45 L40 80 L48 52 L30 52 Z" fill="white"/>
-          </svg>
+    <div class="frontpage-window">
+      <!-- Title Bar -->
+      <div class="title-bar">
+        <span class="title-bar-icon">📄</span>
+        <span class="title-bar-text">Microsoft FrontPage - C:\My Webs\mywebsite\{filename}</span>
+        <div class="title-bar-controls">
+          <button class="title-bar-btn">_</button>
+          <button class="title-bar-btn">□</button>
+          <button class="title-bar-btn">×</button>
         </div>
-        <div class="loading-bar-container">
-          <div class="loading-bar" id="loadingBar"></div>
-        </div>
-        <div class="loading-text">LOADING<span id="loadingDots">...</span></div>
-        <div class="skip-intro" id="skipIntro">[ SKIP INTRO ]</div>
       </div>
-    )}
 
-    <!-- Sound Toggle -->
-    <button class="sound-toggle" id="soundToggle" title="Toggle Sound">
-      <span id="soundIcon">🔊</span>
-    </button>
+      <!-- Menu Bar -->
+      <div class="menu-bar">
+        <span class="menu-item"><u>F</u>ile</span>
+        <span class="menu-item"><u>E</u>dit</span>
+        <span class="menu-item"><u>V</u>iew</span>
+        <span class="menu-item"><u>I</u>nsert</span>
+        <span class="menu-item">F<u>o</u>rmat</span>
+        <span class="menu-item"><u>T</u>ools</span>
+        <span class="menu-item">T<u>a</u>ble</span>
+        <span class="menu-item">Fra<u>m</u>es</span>
+        <span class="menu-item"><u>W</u>indow</span>
+        <span class="menu-item"><u>H</u>elp</span>
+      </div>
 
-    <!-- CRT Monitor -->
-    <div class="crt-container">
-      <div class="crt-monitor">
-        <div class="crt-bezel">
-          <div class="crt-screen">
-            <div class="screen-content">
-              <!-- Navigation -->
-              <nav class="nav-container">
-                <a href={`${base}`} class={`nav-btn ${currentPath === base || currentPath === base.slice(0, -1) ? 'active' : ''}`} data-nav>HOME</a>
-                <a href={`${base}about/`} class={`nav-btn ${currentPath.includes('/about') ? 'active' : ''}`} data-nav>ABOUT</a>
-                <a href={`${base}articles/`} class={`nav-btn ${currentPath.includes('/articles') ? 'active' : ''}`} data-nav>ARTICLES</a>
-                <a href={`${base}notes/`} class={`nav-btn ${currentPath.includes('/notes') ? 'active' : ''}`} data-nav>NOTES</a>
-              </nav>
+      <!-- Toolbar 1 -->
+      <div class="toolbar">
+        <button class="toolbar-btn" title="New">📄</button>
+        <button class="toolbar-btn" title="Open">📂</button>
+        <button class="toolbar-btn" title="Save">💾</button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Publish">🌐</button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Print">🖨️</button>
+        <button class="toolbar-btn" title="Preview">👁️</button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Cut">✂️</button>
+        <button class="toolbar-btn" title="Copy">📋</button>
+        <button class="toolbar-btn" title="Paste">📎</button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Undo">↩️</button>
+        <button class="toolbar-btn" title="Redo">↪️</button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Insert Hyperlink">🔗</button>
+        <button class="toolbar-btn" title="Insert Picture">🖼️</button>
+      </div>
 
-              <!-- Page Content -->
-              <main id="mainContent">
-                <slot />
-              </main>
+      <!-- Toolbar 2 - Formatting -->
+      <div class="toolbar">
+        <select class="toolbar-dropdown font-dropdown">
+          <option>Comic Sans MS</option>
+          <option>Times New Roman</option>
+          <option>Arial</option>
+          <option>Verdana</option>
+          <option>Courier New</option>
+        </select>
+        <select class="toolbar-dropdown size-dropdown">
+          <option>3 (12pt)</option>
+          <option>1 (8pt)</option>
+          <option>2 (10pt)</option>
+          <option>4 (14pt)</option>
+          <option>5 (18pt)</option>
+          <option>6 (24pt)</option>
+          <option>7 (36pt)</option>
+        </select>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Bold"><b>B</b></button>
+        <button class="toolbar-btn" title="Italic"><i>I</i></button>
+        <button class="toolbar-btn" title="Underline"><u>U</u></button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Align Left">⬅️</button>
+        <button class="toolbar-btn" title="Center">⬜</button>
+        <button class="toolbar-btn" title="Align Right">➡️</button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Bullets">•</button>
+        <button class="toolbar-btn" title="Numbering">#</button>
+        <span class="toolbar-separator"></span>
+        <button class="toolbar-btn" title="Font Color">🎨</button>
+        <button class="toolbar-btn" title="Highlight">✏️</button>
+      </div>
+
+      <!-- Main Area -->
+      <div class="main-area">
+        <!-- Views Panel -->
+        <div class="views-panel">
+          <div class="views-title">Views</div>
+          <a href={`${base}`} class={`view-btn ${isHome ? 'active' : ''}`}>
+            <span class="view-btn-icon">📄</span>
+            <span>Page</span>
+          </a>
+          <a href={`${base}`} class="view-btn">
+            <span class="view-btn-icon">📁</span>
+            <span>Folders</span>
+          </a>
+          <div class="view-btn">
+            <span class="view-btn-icon">📊</span>
+            <span>Reports</span>
+          </div>
+          <div class="view-btn">
+            <span class="view-btn-icon">🗺️</span>
+            <span>Navigation</span>
+          </div>
+          <div class="view-btn">
+            <span class="view-btn-icon">🔗</span>
+            <span>Hyperlinks</span>
+          </div>
+          <div class="view-btn">
+            <span class="view-btn-icon">📝</span>
+            <span>Tasks</span>
+          </div>
+        </div>
+
+        <!-- Folder List -->
+        <div class="folder-panel">
+          <div class="folder-header">Folder List</div>
+          <div class="folder-tree">
+            <div class="tree-item">
+              <span class="tree-expand">▼</span>
+              <span class="tree-icon">📁</span>
+              C:\My Webs\mywebsite
+            </div>
+            <a href={`${base}`} class={`tree-item ${isHome ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              index.htm
+            </a>
+            <a href={`${base}about/`} class={`tree-item ${isAbout ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              about.htm
+            </a>
+            <div class="tree-item">
+              <span class="tree-indent"></span>
+              <span class="tree-expand">▼</span>
+              <span class="tree-icon">📁</span>
+              articles
+            </div>
+            <a href={`${base}articles/`} class={`tree-item ${isArticles && currentPath.endsWith('/articles/') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              index.htm
+            </a>
+            <a href={`${base}articles/why-flash-was-great/`} class={`tree-item ${currentPath.includes('why-flash') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              flash.htm
+            </a>
+            <a href={`${base}articles/retro-web-design/`} class={`tree-item ${currentPath.includes('retro-web') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              retro.htm
+            </a>
+            <a href={`${base}articles/css-animations-guide/`} class={`tree-item ${currentPath.includes('css-anim') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              cssanim.htm
+            </a>
+            <div class="tree-item">
+              <span class="tree-indent"></span>
+              <span class="tree-expand">▼</span>
+              <span class="tree-icon">📁</span>
+              notes
+            </div>
+            <a href={`${base}notes/`} class={`tree-item ${isNotes && currentPath.endsWith('/notes/') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              index.htm
+            </a>
+            <a href={`${base}notes/gsap-quick-tips/`} class={`tree-item ${currentPath.includes('gsap') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              gsap.htm
+            </a>
+            <a href={`${base}notes/terminal-aliases/`} class={`tree-item ${currentPath.includes('terminal') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              terminal.htm
+            </a>
+            <a href={`${base}notes/color-palette-generator/`} class={`tree-item ${currentPath.includes('color-palette') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              colors.htm
+            </a>
+            <a href={`${base}notes/web-audio-basics/`} class={`tree-item ${currentPath.includes('web-audio') ? 'selected' : ''}`}>
+              <span class="tree-indent"></span>
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📄</span>
+              audio.htm
+            </a>
+            <div class="tree-item">
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📁</span>
+              images
+            </div>
+            <div class="tree-item">
+              <span class="tree-indent"></span>
+              <span class="tree-icon">📁</span>
+              _private
             </div>
           </div>
         </div>
-        <div class="monitor-brand">RETROVISION</div>
-        <div class="monitor-led"></div>
+
+        <!-- Editor Panel -->
+        <div class="editor-panel">
+          <div class="editor-header">
+            <span class="editor-filename">{filename}</span>
+            <button class="editor-close">×</button>
+          </div>
+          <div class="editor-content">
+            <slot />
+          </div>
+          <div class="editor-tabs">
+            <span class="editor-tab active">Normal</span>
+            <span class="editor-tab">HTML</span>
+            <span class="editor-tab">Preview</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span class="status-section main">
+          <span class="status-icon">📄</span>
+          Ready
+        </span>
+        <span class="status-section">
+          <span class="status-icon">🌐</span>
+          0 seconds over 28.8
+        </span>
       </div>
     </div>
-
-    <!-- Macromedia Badge -->
-    <div class="macromedia-badge" id="macromediaBadge">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="mmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#ff0066"/>
-            <stop offset="100%" style="stop-color:#cc0052"/>
-          </linearGradient>
-        </defs>
-        <circle cx="50" cy="50" r="45" fill="url(#mmGrad)"/>
-        <path d="M35 25 L65 25 L55 45 L70 45 L40 80 L48 52 L30 52 Z" fill="white"/>
-      </svg>
-      <span>Made with Flash vibes</span>
-    </div>
-
-    <!-- Page Transition Overlay -->
-    <div class="page-transition" id="pageTransition"></div>
-
-    <script>
-      import gsap from 'gsap';
-
-      // Sound Management
-      class SoundManager {
-        constructor() {
-          this.muted = localStorage.getItem('soundMuted') === 'true';
-          this.audioContext = null;
-          this.sounds = {};
-          this.initialized = false;
-        }
-
-        init() {
-          if (this.initialized) return;
-          this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-          this.initialized = true;
-          this.updateIcon();
-        }
-
-        playTone(frequency: number, duration: number, type: OscillatorType = 'square') {
-          if (this.muted || !this.audioContext) return;
-
-          const oscillator = this.audioContext.createOscillator();
-          const gainNode = this.audioContext.createGain();
-
-          oscillator.connect(gainNode);
-          gainNode.connect(this.audioContext.destination);
-
-          oscillator.frequency.value = frequency;
-          oscillator.type = type;
-
-          gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
-          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
-
-          oscillator.start(this.audioContext.currentTime);
-          oscillator.stop(this.audioContext.currentTime + duration);
-        }
-
-        playHover() {
-          this.playTone(800, 0.05, 'sine');
-        }
-
-        playClick() {
-          this.playTone(400, 0.1, 'square');
-          setTimeout(() => this.playTone(600, 0.1, 'square'), 50);
-        }
-
-        playTransition() {
-          this.playTone(200, 0.2, 'sawtooth');
-          setTimeout(() => this.playTone(400, 0.2, 'sawtooth'), 100);
-          setTimeout(() => this.playTone(800, 0.3, 'sawtooth'), 200);
-        }
-
-        toggle() {
-          this.muted = !this.muted;
-          localStorage.setItem('soundMuted', String(this.muted));
-          this.updateIcon();
-          if (!this.muted) {
-            this.init();
-            this.playClick();
-          }
-        }
-
-        updateIcon() {
-          const icon = document.getElementById('soundIcon');
-          const toggle = document.getElementById('soundToggle');
-          if (icon) icon.textContent = this.muted ? '🔇' : '🔊';
-          if (toggle) toggle.classList.toggle('muted', this.muted);
-        }
-      }
-
-      const soundManager = new SoundManager();
-      soundManager.updateIcon();
-
-      // Initialize on first interaction
-      document.addEventListener('click', () => soundManager.init(), { once: true });
-
-      // Sound toggle button
-      document.getElementById('soundToggle')?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        soundManager.toggle();
-      });
-
-      // Preloader Animation
-      const preloader = document.getElementById('preloader');
-      const loadingBar = document.getElementById('loadingBar');
-      const skipIntro = document.getElementById('skipIntro');
-
-      function hidePreloader() {
-        gsap.to(preloader, {
-          opacity: 0,
-          duration: 0.5,
-          onComplete: () => {
-            if (preloader) preloader.style.display = 'none';
-            soundManager.init();
-            soundManager.playTransition();
-          }
-        });
-      }
-
-      if (preloader && loadingBar) {
-        let progress = 0;
-        const loadingInterval = setInterval(() => {
-          progress += Math.random() * 15;
-          if (progress >= 100) {
-            progress = 100;
-            clearInterval(loadingInterval);
-            setTimeout(hidePreloader, 500);
-          }
-          loadingBar.style.width = progress + '%';
-        }, 200);
-
-        // Animated loading dots
-        const dots = document.getElementById('loadingDots');
-        if (dots) {
-          let dotCount = 0;
-          setInterval(() => {
-            dotCount = (dotCount + 1) % 4;
-            dots.textContent = '.'.repeat(dotCount || 1);
-          }, 300);
-        }
-
-        skipIntro?.addEventListener('click', () => {
-          clearInterval(loadingInterval);
-          hidePreloader();
-        });
-      }
-
-      // Navigation with transitions
-      const navButtons = document.querySelectorAll('[data-nav]');
-      const pageTransition = document.getElementById('pageTransition');
-
-      navButtons.forEach(btn => {
-        btn.addEventListener('mouseenter', () => soundManager.playHover());
-
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          soundManager.playClick();
-
-          const href = (btn as HTMLAnchorElement).href;
-
-          // Page transition animation
-          gsap.to(pageTransition, {
-            scaleX: 1,
-            duration: 0.3,
-            ease: 'power2.inOut',
-            onComplete: () => {
-              window.location.href = href;
-            }
-          });
-        });
-      });
-
-      // Animate content on load
-      gsap.from('#mainContent', {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
-        delay: 0.2,
-        ease: 'power2.out'
-      });
-
-      // Card hover sounds
-      document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('mouseenter', () => soundManager.playHover());
-        card.addEventListener('click', () => soundManager.playClick());
-      });
-
-      // Macromedia badge easter egg
-      document.getElementById('macromediaBadge')?.addEventListener('click', () => {
-        soundManager.playTransition();
-        gsap.to('.macromedia-badge', {
-          rotation: 360,
-          duration: 0.5,
-          ease: 'power2.out',
-          onComplete: () => {
-            gsap.set('.macromedia-badge', { rotation: 0 });
-          }
-        });
-      });
-
-      // Cursor trail effect
-      let trails: HTMLElement[] = [];
-      const trailCount = 5;
-
-      for (let i = 0; i < trailCount; i++) {
-        const trail = document.createElement('div');
-        trail.className = 'cursor-trail';
-        document.body.appendChild(trail);
-        trails.push(trail);
-      }
-
-      let mouseX = 0, mouseY = 0;
-
-      document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-      });
-
-      function animateTrails() {
-        let x = mouseX, y = mouseY;
-
-        trails.forEach((trail, i) => {
-          const nextTrail = trails[i + 1] || trails[0];
-
-          gsap.to(trail, {
-            x: x - 5,
-            y: y - 5,
-            opacity: 0.5 - (i * 0.1),
-            duration: 0.1 + (i * 0.05),
-            ease: 'power2.out'
-          });
-
-          x += (parseFloat(trail.style.left) - x) * 0.3;
-          y += (parseFloat(trail.style.top) - y) * 0.3;
-        });
-
-        requestAnimationFrame(animateTrails);
-      }
-
-      animateTrails();
-    </script>
   </body>
 </html>
