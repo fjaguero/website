@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Color Palette Generator | Notes">
+  <article class="note-page">
+    <header class="note-header">
+      <a href={`${base}notes/`} class="back-link">← Back to Notes</a>
+      <h1 class="page-title">Color Palette Generator</h1>
+      <div class="note-meta">
+        <span>📅 January 8, 2024</span>
+        <span class="tag">#design</span>
+        <span class="tag">#tools</span>
+      </div>
+    </header>
+
+    <div class="note-body content-box">
+      <p>Quick cyberpunk/retro palette using HSL:</p>
+
+      <div class="palette-demo">
+        <div class="color-swatch" style="background: hsl(180, 100%, 50%);">
+          <span>Cyan<br>#00FFFF</span>
+        </div>
+        <div class="color-swatch" style="background: hsl(300, 100%, 50%);">
+          <span>Magenta<br>#FF00FF</span>
+        </div>
+        <div class="color-swatch" style="background: hsl(60, 100%, 50%); color: #000;">
+          <span>Yellow<br>#FFFF00</span>
+        </div>
+        <div class="color-swatch" style="background: hsl(330, 100%, 40%);">
+          <span>Pink<br>#CC0066</span>
+        </div>
+      </div>
+
+      <h2>The formula</h2>
+      <div class="code-box">
+        <pre><code>// Neon colors: full saturation, 50% lightness
+--neon-cyan: hsl(180, 100%, 50%);
+--neon-magenta: hsl(300, 100%, 50%);
+--neon-yellow: hsl(60, 100%, 50%);
+
+// Darken for backgrounds
+--bg-dark: hsl(240, 20%, 5%);
+--bg-medium: hsl(240, 15%, 12%);</code></pre>
+      </div>
+
+      <h2>Glow effect</h2>
+      <div class="code-box">
+        <pre><code>text-shadow:
+  0 0 10px currentColor,
+  0 0 20px currentColor,
+  0 0 40px currentColor;</code></pre>
+      </div>
+    </div>
+
+    <footer class="note-footer">
+      <a href={`${base}notes/`} class="nav-btn">← More Notes</a>
+    </footer>
+  </article>
+
+  <style>
+    .note-page { max-width: 700px; margin: 0 auto; }
+    .note-header { margin-bottom: 30px; }
+    .back-link { display: inline-block; font-family: var(--font-terminal); font-size: 14px; color: #666; text-decoration: none; margin-bottom: 20px; transition: color 0.2s; }
+    .back-link:hover { color: var(--color-accent); }
+    .note-meta { display: flex; gap: 15px; justify-content: center; align-items: center; font-size: 14px; color: #666; margin-top: 15px; flex-wrap: wrap; }
+    .tag { font-family: var(--font-terminal); font-size: 11px; color: var(--color-primary); background: rgba(0, 255, 255, 0.1); padding: 3px 8px; border-radius: 3px; }
+    .note-body { font-size: 16px; line-height: 1.7; }
+    .note-body p { margin-bottom: 15px; color: #ccc; }
+    .note-body h2 { font-family: var(--font-tech); font-size: 16px; color: var(--color-accent); margin: 25px 0 10px; }
+    .code-box { background: #0a0a0f; border: 1px solid #333; border-radius: 5px; padding: 15px; margin: 10px 0 20px; overflow-x: auto; }
+    .code-box pre { margin: 0; font-family: 'Courier New', monospace; font-size: 13px; color: #0f0; }
+    .note-footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #333; text-align: center; }
+
+    .palette-demo {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .color-swatch {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 12px;
+      font-family: var(--font-terminal);
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    @media (max-width: 500px) {
+      .palette-demo { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</Layout>

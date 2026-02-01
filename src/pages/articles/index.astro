@@ -1,0 +1,200 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Sample articles data (in a real site, this would come from content collections)
+const articles = [
+  {
+    slug: 'why-flash-was-great',
+    title: 'Why Flash Was Actually Great',
+    date: '2024-01-15',
+    excerpt: 'A nostalgic look back at the Macromedia Flash era and why it shaped the creative web.',
+  },
+  {
+    slug: 'retro-web-design',
+    title: 'Bringing Back Retro Web Design',
+    date: '2024-01-10',
+    excerpt: 'How to recreate the magic of early 2000s web design with modern technologies.',
+  },
+  {
+    slug: 'css-animations-guide',
+    title: 'CSS Animations: A Complete Guide',
+    date: '2024-01-05',
+    excerpt: 'Everything you need to know about creating smooth, performant CSS animations.',
+  },
+];
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Articles | Retro Website">
+  <h1 class="page-title">ARTICLES</h1>
+
+  <div class="articles-intro content-box">
+    <p>
+      Long-form thoughts, tutorials, and deep dives into topics I find interesting.
+      Updated whenever inspiration strikes.
+    </p>
+  </div>
+
+  <div class="article-list">
+    {articles.map((article, index) => (
+      <a href={`${base}articles/${article.slug}/`} class="article-card" style={`animation-delay: ${index * 0.1}s`}>
+        <div class="article-number">#{String(index + 1).padStart(2, '0')}</div>
+        <div class="article-content">
+          <h2 class="article-title">{article.title}</h2>
+          <div class="article-meta">
+            <span class="article-date">📅 {article.date}</span>
+          </div>
+          <p class="article-excerpt">{article.excerpt}</p>
+        </div>
+        <div class="article-arrow">▸</div>
+      </a>
+    ))}
+  </div>
+
+  <div class="archive-note">
+    <span class="blink">_</span> More articles coming soon...
+  </div>
+
+  <style>
+    .articles-intro {
+      max-width: 700px;
+      margin: 0 auto 30px;
+      text-align: center;
+    }
+
+    .article-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .article-card {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(145deg, rgba(40, 40, 60, 0.6), rgba(20, 20, 30, 0.8));
+      border: 1px solid #333;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      animation: slideIn 0.5s ease-out backwards;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .article-card:hover {
+      border-color: var(--color-primary);
+      transform: translateX(10px);
+      box-shadow:
+        0 5px 20px rgba(0, 255, 255, 0.2),
+        -5px 0 20px rgba(0, 255, 255, 0.1);
+    }
+
+    .article-number {
+      font-family: var(--font-tech);
+      font-size: 24px;
+      color: var(--color-secondary);
+      margin-right: 20px;
+      opacity: 0.5;
+    }
+
+    .article-card:hover .article-number {
+      opacity: 1;
+    }
+
+    .article-content {
+      flex: 1;
+    }
+
+    .article-title {
+      font-family: var(--font-tech);
+      font-size: 18px;
+      color: var(--color-primary);
+      margin-bottom: 8px;
+      transition: text-shadow 0.3s;
+    }
+
+    .article-card:hover .article-title {
+      text-shadow: 0 0 10px var(--color-primary);
+    }
+
+    .article-meta {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .article-date {
+      font-family: var(--font-terminal);
+    }
+
+    .article-excerpt {
+      font-size: 14px;
+      color: #999;
+      line-height: 1.5;
+    }
+
+    .article-arrow {
+      font-size: 24px;
+      color: #444;
+      margin-left: 20px;
+      transition: all 0.3s;
+    }
+
+    .article-card:hover .article-arrow {
+      color: var(--color-primary);
+      transform: translateX(5px);
+    }
+
+    .archive-note {
+      text-align: center;
+      margin-top: 40px;
+      font-family: var(--font-terminal);
+      font-size: 14px;
+      color: #666;
+    }
+
+    .blink {
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .article-card {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .article-number {
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+
+      .article-arrow {
+        margin-left: 0;
+        margin-top: 15px;
+        transform: rotate(90deg);
+      }
+
+      .article-card:hover .article-arrow {
+        transform: rotate(90deg) translateX(5px);
+      }
+    }
+  </style>
+</Layout>

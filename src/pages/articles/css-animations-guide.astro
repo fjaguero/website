@@ -1,0 +1,223 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="CSS Animations: A Complete Guide | Articles">
+  <article class="article-page">
+    <header class="article-header">
+      <a href={`${base}articles/`} class="back-link">← Back to Articles</a>
+      <h1 class="page-title">CSS Animations: A Complete Guide</h1>
+      <div class="article-meta">
+        <span>📅 January 5, 2024</span>
+        <span>⏱️ 6 min read</span>
+      </div>
+    </header>
+
+    <div class="article-body content-box">
+      <p>
+        CSS animations are one of the most powerful tools in a web developer's arsenal.
+        They can bring interfaces to life, guide users' attention, and create memorable
+        experiences. Let's dive deep.
+      </p>
+
+      <h2>The Basics: Transitions vs Animations</h2>
+      <p>
+        <strong>Transitions</strong> are simple: they animate between two states when
+        a property changes. Perfect for hover effects and state changes.
+      </p>
+
+      <div class="code-box">
+        <pre><code set:html={`.button {
+  transition: transform 0.3s ease;
+}
+.button:hover {
+  transform: scale(1.1);
+}`} /></pre>
+      </div>
+
+      <p>
+        <strong>Animations</strong> are more powerful: they can have multiple keyframes,
+        run automatically, loop infinitely, and don't need a trigger.
+      </p>
+
+      <div class="code-box">
+        <pre><code set:html={`@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.element {
+  animation: pulse 2s infinite;
+}`} /></pre>
+      </div>
+
+      <h2>Timing Functions</h2>
+      <p>
+        The timing function (or "easing") controls the acceleration curve. It makes
+        the difference between robotic movement and natural motion.
+      </p>
+
+      <ul>
+        <li><strong>linear</strong> — Constant speed (often looks unnatural)</li>
+        <li><strong>ease</strong> — Slow start, fast middle, slow end</li>
+        <li><strong>ease-in</strong> — Starts slow, ends fast</li>
+        <li><strong>ease-out</strong> — Starts fast, ends slow</li>
+        <li><strong>ease-in-out</strong> — Slow at both ends</li>
+        <li><strong>cubic-bezier()</strong> — Custom curve</li>
+      </ul>
+
+      <h2>Performance Tips</h2>
+      <p>
+        Not all CSS properties animate equally. For smooth 60fps animations, stick to:
+      </p>
+
+      <ul>
+        <li><strong>transform</strong> — translate, scale, rotate</li>
+        <li><strong>opacity</strong> — fade in/out</li>
+      </ul>
+
+      <p>
+        Avoid animating <code>width</code>, <code>height</code>, <code>top</code>,
+        <code>left</code>, or <code>margin</code>. These trigger layout recalculations
+        and will be janky on slower devices.
+      </p>
+
+      <h2>The Glow Effect</h2>
+      <p>
+        One of my favorite retro effects — the neon glow:
+      </p>
+
+      <div class="code-box">
+        <pre><code set:html={`@keyframes glow {
+  0%, 100% {
+    text-shadow:
+      0 0 10px #0ff,
+      0 0 20px #0ff;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #0ff,
+      0 0 40px #0ff,
+      0 0 60px #0ff;
+  }
+}
+.neon-text {
+  color: #0ff;
+  animation: glow 2s ease-in-out infinite;
+}`} /></pre>
+      </div>
+
+      <p>
+        Layer multiple shadows at different blur radii for that authentic neon look.
+        Combine with a dark background for maximum impact.
+      </p>
+    </div>
+
+    <footer class="article-footer">
+      <a href={`${base}articles/`} class="nav-btn">← More Articles</a>
+    </footer>
+  </article>
+
+  <style>
+    .article-page {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .article-header {
+      margin-bottom: 30px;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-family: var(--font-terminal);
+      font-size: 14px;
+      color: #666;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--color-primary);
+    }
+
+    .article-meta {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      font-size: 14px;
+      color: #666;
+      margin-top: 15px;
+    }
+
+    .article-body {
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .article-body h2 {
+      font-family: var(--font-tech);
+      font-size: 20px;
+      color: var(--color-secondary);
+      margin: 30px 0 15px;
+      padding-left: 15px;
+      border-left: 3px solid var(--color-secondary);
+    }
+
+    .article-body p {
+      margin-bottom: 15px;
+      color: #ccc;
+    }
+
+    .article-body strong {
+      color: var(--color-primary);
+    }
+
+    .article-body code {
+      background: #111;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: var(--color-accent);
+    }
+
+    .article-body ul {
+      margin: 20px 0;
+      padding-left: 30px;
+    }
+
+    .article-body li {
+      margin-bottom: 10px;
+      color: #bbb;
+    }
+
+    .article-body li::marker {
+      color: var(--color-primary);
+    }
+
+    .code-box {
+      background: #0a0a0f;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .code-box pre {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #0f0;
+    }
+
+    .article-footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      text-align: center;
+    }
+  </style>
+</Layout>

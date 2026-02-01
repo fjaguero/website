@@ -1,0 +1,320 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  showPreloader?: boolean;
+}
+
+const { title, showPreloader = false } = Astro.props;
+const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A retro Flash-style personal website" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <!-- Preloader -->
+    {showPreloader && (
+      <div class="preloader" id="preloader">
+        <div class="flash-logo">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="flashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ff0066"/>
+                <stop offset="50%" style="stop-color:#ff3366"/>
+                <stop offset="100%" style="stop-color:#cc0052"/>
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="50" r="45" fill="url(#flashGrad)"/>
+            <path d="M35 25 L65 25 L55 45 L70 45 L40 80 L48 52 L30 52 Z" fill="white"/>
+          </svg>
+        </div>
+        <div class="loading-bar-container">
+          <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <div class="loading-text">LOADING<span id="loadingDots">...</span></div>
+        <div class="skip-intro" id="skipIntro">[ SKIP INTRO ]</div>
+      </div>
+    )}
+
+    <!-- Sound Toggle -->
+    <button class="sound-toggle" id="soundToggle" title="Toggle Sound">
+      <span id="soundIcon">🔊</span>
+    </button>
+
+    <!-- CRT Monitor -->
+    <div class="crt-container">
+      <div class="crt-monitor">
+        <div class="crt-bezel">
+          <div class="crt-screen">
+            <div class="screen-content">
+              <!-- Navigation -->
+              <nav class="nav-container">
+                <a href={`${base}`} class={`nav-btn ${currentPath === base || currentPath === base.slice(0, -1) ? 'active' : ''}`} data-nav>HOME</a>
+                <a href={`${base}about/`} class={`nav-btn ${currentPath.includes('/about') ? 'active' : ''}`} data-nav>ABOUT</a>
+                <a href={`${base}articles/`} class={`nav-btn ${currentPath.includes('/articles') ? 'active' : ''}`} data-nav>ARTICLES</a>
+                <a href={`${base}notes/`} class={`nav-btn ${currentPath.includes('/notes') ? 'active' : ''}`} data-nav>NOTES</a>
+              </nav>
+
+              <!-- Page Content -->
+              <main id="mainContent">
+                <slot />
+              </main>
+            </div>
+          </div>
+        </div>
+        <div class="monitor-brand">RETROVISION</div>
+        <div class="monitor-led"></div>
+      </div>
+    </div>
+
+    <!-- Macromedia Badge -->
+    <div class="macromedia-badge" id="macromediaBadge">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="mmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ff0066"/>
+            <stop offset="100%" style="stop-color:#cc0052"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="45" fill="url(#mmGrad)"/>
+        <path d="M35 25 L65 25 L55 45 L70 45 L40 80 L48 52 L30 52 Z" fill="white"/>
+      </svg>
+      <span>Made with Flash vibes</span>
+    </div>
+
+    <!-- Page Transition Overlay -->
+    <div class="page-transition" id="pageTransition"></div>
+
+    <script>
+      import gsap from 'gsap';
+
+      // Sound Management
+      class SoundManager {
+        constructor() {
+          this.muted = localStorage.getItem('soundMuted') === 'true';
+          this.audioContext = null;
+          this.sounds = {};
+          this.initialized = false;
+        }
+
+        init() {
+          if (this.initialized) return;
+          this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+          this.initialized = true;
+          this.updateIcon();
+        }
+
+        playTone(frequency: number, duration: number, type: OscillatorType = 'square') {
+          if (this.muted || !this.audioContext) return;
+
+          const oscillator = this.audioContext.createOscillator();
+          const gainNode = this.audioContext.createGain();
+
+          oscillator.connect(gainNode);
+          gainNode.connect(this.audioContext.destination);
+
+          oscillator.frequency.value = frequency;
+          oscillator.type = type;
+
+          gainNode.gain.setValueAtTime(0.1, this.audioContext.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+
+          oscillator.start(this.audioContext.currentTime);
+          oscillator.stop(this.audioContext.currentTime + duration);
+        }
+
+        playHover() {
+          this.playTone(800, 0.05, 'sine');
+        }
+
+        playClick() {
+          this.playTone(400, 0.1, 'square');
+          setTimeout(() => this.playTone(600, 0.1, 'square'), 50);
+        }
+
+        playTransition() {
+          this.playTone(200, 0.2, 'sawtooth');
+          setTimeout(() => this.playTone(400, 0.2, 'sawtooth'), 100);
+          setTimeout(() => this.playTone(800, 0.3, 'sawtooth'), 200);
+        }
+
+        toggle() {
+          this.muted = !this.muted;
+          localStorage.setItem('soundMuted', String(this.muted));
+          this.updateIcon();
+          if (!this.muted) {
+            this.init();
+            this.playClick();
+          }
+        }
+
+        updateIcon() {
+          const icon = document.getElementById('soundIcon');
+          const toggle = document.getElementById('soundToggle');
+          if (icon) icon.textContent = this.muted ? '🔇' : '🔊';
+          if (toggle) toggle.classList.toggle('muted', this.muted);
+        }
+      }
+
+      const soundManager = new SoundManager();
+      soundManager.updateIcon();
+
+      // Initialize on first interaction
+      document.addEventListener('click', () => soundManager.init(), { once: true });
+
+      // Sound toggle button
+      document.getElementById('soundToggle')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        soundManager.toggle();
+      });
+
+      // Preloader Animation
+      const preloader = document.getElementById('preloader');
+      const loadingBar = document.getElementById('loadingBar');
+      const skipIntro = document.getElementById('skipIntro');
+
+      function hidePreloader() {
+        gsap.to(preloader, {
+          opacity: 0,
+          duration: 0.5,
+          onComplete: () => {
+            if (preloader) preloader.style.display = 'none';
+            soundManager.init();
+            soundManager.playTransition();
+          }
+        });
+      }
+
+      if (preloader && loadingBar) {
+        let progress = 0;
+        const loadingInterval = setInterval(() => {
+          progress += Math.random() * 15;
+          if (progress >= 100) {
+            progress = 100;
+            clearInterval(loadingInterval);
+            setTimeout(hidePreloader, 500);
+          }
+          loadingBar.style.width = progress + '%';
+        }, 200);
+
+        // Animated loading dots
+        const dots = document.getElementById('loadingDots');
+        if (dots) {
+          let dotCount = 0;
+          setInterval(() => {
+            dotCount = (dotCount + 1) % 4;
+            dots.textContent = '.'.repeat(dotCount || 1);
+          }, 300);
+        }
+
+        skipIntro?.addEventListener('click', () => {
+          clearInterval(loadingInterval);
+          hidePreloader();
+        });
+      }
+
+      // Navigation with transitions
+      const navButtons = document.querySelectorAll('[data-nav]');
+      const pageTransition = document.getElementById('pageTransition');
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('mouseenter', () => soundManager.playHover());
+
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          soundManager.playClick();
+
+          const href = (btn as HTMLAnchorElement).href;
+
+          // Page transition animation
+          gsap.to(pageTransition, {
+            scaleX: 1,
+            duration: 0.3,
+            ease: 'power2.inOut',
+            onComplete: () => {
+              window.location.href = href;
+            }
+          });
+        });
+      });
+
+      // Animate content on load
+      gsap.from('#mainContent', {
+        opacity: 0,
+        y: 20,
+        duration: 0.6,
+        delay: 0.2,
+        ease: 'power2.out'
+      });
+
+      // Card hover sounds
+      document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseenter', () => soundManager.playHover());
+        card.addEventListener('click', () => soundManager.playClick());
+      });
+
+      // Macromedia badge easter egg
+      document.getElementById('macromediaBadge')?.addEventListener('click', () => {
+        soundManager.playTransition();
+        gsap.to('.macromedia-badge', {
+          rotation: 360,
+          duration: 0.5,
+          ease: 'power2.out',
+          onComplete: () => {
+            gsap.set('.macromedia-badge', { rotation: 0 });
+          }
+        });
+      });
+
+      // Cursor trail effect
+      let trails: HTMLElement[] = [];
+      const trailCount = 5;
+
+      for (let i = 0; i < trailCount; i++) {
+        const trail = document.createElement('div');
+        trail.className = 'cursor-trail';
+        document.body.appendChild(trail);
+        trails.push(trail);
+      }
+
+      let mouseX = 0, mouseY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+
+      function animateTrails() {
+        let x = mouseX, y = mouseY;
+
+        trails.forEach((trail, i) => {
+          const nextTrail = trails[i + 1] || trails[0];
+
+          gsap.to(trail, {
+            x: x - 5,
+            y: y - 5,
+            opacity: 0.5 - (i * 0.1),
+            duration: 0.1 + (i * 0.05),
+            ease: 'power2.out'
+          });
+
+          x += (parseFloat(trail.style.left) - x) * 0.3;
+          y += (parseFloat(trail.style.top) - y) * 0.3;
+        });
+
+        requestAnimationFrame(animateTrails);
+      }
+
+      animateTrails();
+    </script>
+  </body>
+</html>

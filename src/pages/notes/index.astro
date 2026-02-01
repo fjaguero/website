@@ -1,0 +1,169 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const notes = [
+  {
+    slug: 'gsap-quick-tips',
+    title: 'GSAP Quick Tips',
+    date: '2024-01-14',
+    tags: ['animation', 'javascript'],
+    excerpt: 'Useful GSAP patterns I keep coming back to.',
+  },
+  {
+    slug: 'terminal-aliases',
+    title: 'My Terminal Aliases',
+    date: '2024-01-12',
+    tags: ['terminal', 'productivity'],
+    excerpt: 'Shell aliases that save me time every day.',
+  },
+  {
+    slug: 'color-palette-generator',
+    title: 'Color Palette Generator',
+    date: '2024-01-08',
+    tags: ['design', 'tools'],
+    excerpt: 'A quick way to generate cyberpunk color palettes.',
+  },
+  {
+    slug: 'web-audio-basics',
+    title: 'Web Audio API Basics',
+    date: '2024-01-03',
+    tags: ['audio', 'javascript'],
+    excerpt: 'Making bleeps and bloops with the Web Audio API.',
+  },
+];
+
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Notes | Retro Website">
+  <h1 class="page-title">NOTES</h1>
+
+  <div class="notes-intro content-box">
+    <p>
+      Quick thoughts, snippets, and things I learned. Less polished than articles,
+      more useful than bookmarks.
+    </p>
+  </div>
+
+  <div class="notes-grid">
+    {notes.map((note, index) => (
+      <a href={`${base}notes/${note.slug}/`} class="note-card" style={`animation-delay: ${index * 0.1}s`}>
+        <div class="note-header">
+          <span class="note-date">{note.date}</span>
+        </div>
+        <h2 class="note-title">{note.title}</h2>
+        <p class="note-excerpt">{note.excerpt}</p>
+        <div class="note-tags">
+          {note.tags.map(tag => (
+            <span class="tag">#{tag}</span>
+          ))}
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <style>
+    .notes-intro {
+      max-width: 600px;
+      margin: 0 auto 30px;
+      text-align: center;
+    }
+
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .note-card {
+      display: block;
+      padding: 20px;
+      background: linear-gradient(145deg, rgba(40, 40, 60, 0.6), rgba(20, 20, 30, 0.8));
+      border: 1px solid #333;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      animation: fadeIn 0.5s ease-out backwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .note-card:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-5px);
+      box-shadow:
+        0 10px 30px rgba(255, 255, 0, 0.15),
+        0 0 20px rgba(255, 255, 0, 0.1);
+    }
+
+    .note-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .note-date {
+      font-family: var(--font-terminal);
+      font-size: 12px;
+      color: #666;
+    }
+
+    .note-title {
+      font-family: var(--font-tech);
+      font-size: 16px;
+      color: var(--color-accent);
+      margin-bottom: 10px;
+      transition: text-shadow 0.3s;
+    }
+
+    .note-card:hover .note-title {
+      text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+    }
+
+    .note-excerpt {
+      font-size: 14px;
+      color: #999;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .note-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: var(--font-terminal);
+      font-size: 11px;
+      color: #666;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px 8px;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+
+    .note-card:hover .tag {
+      color: var(--color-primary);
+      background: rgba(0, 255, 255, 0.1);
+    }
+
+    @media (max-width: 600px) {
+      .notes-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</Layout>

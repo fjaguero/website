@@ -1,0 +1,185 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+---
+
+<Layout title="Bringing Back Retro Web Design | Articles">
+  <article class="article-page">
+    <header class="article-header">
+      <a href={`${base}articles/`} class="back-link">← Back to Articles</a>
+      <h1 class="page-title">Bringing Back Retro Web Design</h1>
+      <div class="article-meta">
+        <span>📅 January 10, 2024</span>
+        <span>⏱️ 4 min read</span>
+      </div>
+    </header>
+
+    <div class="article-body content-box">
+      <p>
+        The early web was a wild place. Animated GIFs, tiled backgrounds, visitor counters,
+        and "Best viewed in Netscape Navigator" badges. It was chaotic, beautiful, and
+        deeply personal.
+      </p>
+
+      <h2>The Aesthetic Elements</h2>
+      <p>
+        If you want to capture that retro vibe, here are the key visual elements:
+      </p>
+
+      <ul>
+        <li><strong>Scanlines and CRT effects</strong> — Mimic old monitors</li>
+        <li><strong>Pixel fonts</strong> — VT323, Press Start 2P, etc.</li>
+        <li><strong>Neon glows</strong> — Cyan, magenta, electric colors</li>
+        <li><strong>Animated cursors</strong> — Sparkle trails!</li>
+        <li><strong>Sound effects</strong> — Bleeps and bloops on interaction</li>
+      </ul>
+
+      <h2>Modern Tools for Retro Feels</h2>
+      <p>
+        You don't need Flash to create these experiences anymore. Modern CSS and JavaScript
+        give us all the power we need:
+      </p>
+
+      <div class="code-box">
+        <pre><code set:html={`/* CRT Scanlines */
+.crt-screen::before {
+  content: '';
+  position: absolute;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+}`} /></pre>
+      </div>
+
+      <p>
+        Libraries like <strong>GSAP</strong> let you create fluid animations that would
+        have made Flash developers jealous. And the Web Audio API can generate those
+        nostalgic chip-tune sounds.
+      </p>
+
+      <h2>Finding the Balance</h2>
+      <p>
+        The challenge is honoring the aesthetic without the usability nightmares of
+        the old web. We can have:
+      </p>
+
+      <ul>
+        <li>Cool animations that don't block content</li>
+        <li>Sound effects with a mute button</li>
+        <li>Unique designs that are still accessible</li>
+        <li>Performance that doesn't require a loading bar (okay, maybe a fake one)</li>
+      </ul>
+
+      <p>
+        The goal is to capture the <em>feeling</em> of those websites — the sense of
+        discovery, the personal touch, the creativity — while being a good citizen
+        of the modern web.
+      </p>
+    </div>
+
+    <footer class="article-footer">
+      <a href={`${base}articles/`} class="nav-btn">← More Articles</a>
+    </footer>
+  </article>
+
+  <style>
+    .article-page {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .article-header {
+      margin-bottom: 30px;
+    }
+
+    .back-link {
+      display: inline-block;
+      font-family: var(--font-terminal);
+      font-size: 14px;
+      color: #666;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--color-primary);
+    }
+
+    .article-meta {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      font-size: 14px;
+      color: #666;
+      margin-top: 15px;
+    }
+
+    .article-body {
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .article-body h2 {
+      font-family: var(--font-tech);
+      font-size: 20px;
+      color: var(--color-secondary);
+      margin: 30px 0 15px;
+      padding-left: 15px;
+      border-left: 3px solid var(--color-secondary);
+    }
+
+    .article-body p {
+      margin-bottom: 15px;
+      color: #ccc;
+    }
+
+    .article-body strong {
+      color: var(--color-primary);
+    }
+
+    .article-body em {
+      color: var(--color-accent);
+      font-style: normal;
+    }
+
+    .article-body ul {
+      margin: 20px 0;
+      padding-left: 30px;
+    }
+
+    .article-body li {
+      margin-bottom: 10px;
+      color: #bbb;
+    }
+
+    .article-body li::marker {
+      color: var(--color-primary);
+    }
+
+    .code-box {
+      background: #0a0a0f;
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 15px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .code-box pre {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #0f0;
+    }
+
+    .article-footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      text-align: center;
+    }
+  </style>
+</Layout>
