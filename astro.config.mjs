@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: 'https://fjaguero.github.io',
-  base: '/website',
+  base: '/website/',
   integrations: [mdx()],
   output: 'static',
 });
